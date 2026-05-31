@@ -4,7 +4,9 @@ Este proyecto es un **ejercicio de aprendizaje** desarrollado mientras se explor
 
 ## Propósito
 
-El objetivo principal de este proyecto fue:
+Este proyecto fue creado principalmente como un **ejercicio de aprendizaje** para explorar las capacidades de Grok Build.
+
+Los objetivos principales fueron:
 
 - Practicar desarrollo frontend con Angular.
 - Experimentar con la integración de APIs reales (especialmente la API de Twitch).
@@ -15,7 +17,7 @@ No se trata de una aplicación lista para producción, sino de un espacio de pr�
 
 ## Tecnologías utilizadas
 
-- **Angular 14**
+- **Angular 14** (versión con la que se inició el proyecto como ejercicio de aprendizaje)
 - **TypeScript**
 - **Three.js** (para el cristal 3D en la página principal)
 - **SCSS** con un diseño temático de League of Legends
@@ -35,12 +37,15 @@ El proyecto cuenta con las siguientes secciones:
 
 ## Estado del proyecto
 
-Este es un proyecto **en estado de aprendizaje**. Algunas características importantes:
+Este es un proyecto **en estado de aprendizaje**. Fue desarrollado principalmente para explorar las capacidades de Grok Build y practicar diferentes conceptos de desarrollo frontend.
+
+Por este motivo se mantuvo en **Angular 14**, la versión con la que se generó originalmente el proyecto. El enfoque principal fue experimentar con features (integración de APIs, Three.js, diseño temático, etc.) más que mantener actualizado el framework.
+
+Algunas características importantes:
 
 - Gran parte de los datos son simulados (mock).
 - La integración con Twitch requiere que el usuario proporcione su propio Client ID y Access Token.
 - No cuenta con backend real.
-- Está construido sobre Angular 14 (versión ya desactualizada).
 
 ## Cómo correr el proyecto localmente
 
