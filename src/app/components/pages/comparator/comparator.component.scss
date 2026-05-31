@@ -1,0 +1,306 @@
+.comparator-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  color: #C8AA6E;
+  font-size: 36px;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #A09B8C;
+}
+
+.comparator-container {
+  background: #111C2E;
+  border: 1px solid #1E2A3E;
+  border-radius: 8px;
+  padding: 32px;
+}
+
+.selection-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.champion-panel {
+  background: #0A1428;
+  border: 1px solid #1E2A3E;
+  border-radius: 6px;
+  padding: 20px;
+  min-height: 280px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.panel-label {
+  color: #C8AA6E;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.clear-btn {
+  background: none;
+  border: 1px solid #C8AA6E;
+  color: #C8AA6E;
+  font-size: 11px;
+  padding: 4px 14px;
+  cursor: pointer;
+}
+
+.search-input {
+  width: 100%;
+  background: #0A1428;
+  border: 1px solid #1E2A3E;
+  color: #F0E6D2;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.champion-list {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.champion-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.champion-option:hover {
+  background: #1E2A3E;
+}
+
+.champion-option img {
+  width: 36px;
+  height: 36px;
+}
+
+.selected-champion {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.selected-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.selected-icon {
+  width: 90px;
+  height: 90px;
+  border: 3px solid #C8AA6E;
+}
+
+.vs-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.vs-circle {
+  width: 64px;
+  height: 64px;
+  background: #C8AA6E;
+  color: #0A1428;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+/* Comparison Results */
+.comparison-results {
+  margin-top: 50px;
+  border-top: 1px solid #1E2A3E;
+  padding-top: 32px;
+}
+
+.winner-banner {
+  background: linear-gradient(90deg, #0A1428, #1E2A3E);
+  border: 1px solid #C8AA6E;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.winner-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #C8AA6E;
+}
+
+.winner-name {
+  font-size: 28px;
+  color: #F0E6D2;
+  font-weight: 700;
+}
+
+.stats-comparison h3 {
+  color: #C8AA6E;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 16px;
+}
+
+.stat-name {
+  color: #A09B8C;
+  font-size: 12px;
+}
+
+.stat-bars {
+  display: grid;
+  grid-template-columns: 1fr 70px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-container.left { justify-content: flex-end; }
+.bar-container.right { justify-content: flex-start; }
+
+.bar {
+  flex: 1;
+  height: 8px;
+  background: #1E2A3E;
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 160px;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #C8AA6E;
+  transition: width 0.4s ease;
+}
+
+.bar.winner .bar-fill {
+  background: #4CAF50;
+}
+
+.bar-value {
+  min-width: 20px;
+  text-align: center;
+  color: #F0E6D2;
+  font-weight: 600;
+}
+
+.quick-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 30px 0;
+}
+
+.info-card {
+  background: #0A1428;
+  padding: 16px 20px;
+  text-align: center;
+}
+
+.info-label {
+  display: block;
+  font-size: 11px;
+  color: #A09B8C;
+}
+
+.info-value {
+  font-size: 28px;
+  color: #C8AA6E;
+  font-weight: 700;
+}
+
+.roles-comparison {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.role-box {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.role-pill {
+  background: #1E2A3E;
+  color: #C8AA6E;
+  padding: 4px 14px;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+.vs-small {
+  color: #C8AA6E;
+  font-weight: 700;
+}
+
+.note {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin-top: 30px;
+  font-style: italic;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px;
+  color: #A09B8C;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #1E2A3E;
+  border-top-color: #C8AA6E;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

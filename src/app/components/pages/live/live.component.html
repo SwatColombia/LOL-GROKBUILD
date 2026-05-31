@@ -1,0 +1,221 @@
+<div class="live-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>EN VIVO Y EVENTOS</h1>
+    <p>Streams de League of Legends y próximos torneos internacionales</p>
+  </div>
+
+  <!-- Twitch Connection Settings -->
+  <div class="twitch-setup" *ngIf="!isUsingRealTwitch">
+    <div class="setup-card">
+      <h3>Conectar con Twitch API (Real)</h3>
+      <p class="setup-info">
+        Para ver streams reales en vivo, ingresa tu <strong>Client ID</strong> y un <strong>App Access Token</strong> de Twitch.
+      </p>
+
+      <div class="credentials-form">
+        <div class="form-group">
+          <label>Twitch Client ID</label>
+          <input type="text" [(ngModel)]="twitchClientId" placeholder="Tu Client ID de Twitch">
+        </div>
+        <div class="form-group">
+          <label>Twitch Access Token (App Access Token)</label>
+          <input type="password" [(ngModel)]="twitchAccessToken" placeholder="Tu Access Token">
+        </div>
+
+        <div class="setup-actions">
+          <button class="btn-primary" (click)="saveCredentials()" [disabled]="!twitchClientId || !twitchAccessToken || isLoadingStreams">
+            {{ isLoadingStreams ? 'Cargando...' : 'Conectar y cargar streams reales' }}
+          </button>
+          <button class="btn-secondary" (click)="clearCredentials()" [disabled]="isLoadingStreams">
+            Usar datos de prueba
+          </button>
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <div class="twitch-error" *ngIf="twitchError">
+        {{ twitchError }}
+      </div>
+
+      <div class="setup-help">
+        <small>
+          ¿Cómo obtenerlos? Ve a 
+          <a href="https://dev.twitch.tv/console/apps" target="_blank">dev.twitch.tv/console/apps</a> 
+          → Create App → Copia el Client ID. 
+          Luego genera un token usando tu Client ID + Secret (recomendado: 
+          <a href="https://twitchtokengenerator.com" target="_blank">twitchtokengenerator.com</a> → App Access Token).
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Streams Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🔴 Streams en Vivo</h2>
+      <p>
+        {{ isUsingRealTwitch ? 'Datos reales desde la API de Twitch' : 'Datos de demostración' }}
+        <button *ngIf="isUsingRealTwitch" class="small-btn" (click)="clearCredentials()">Desconectar</button>
+      </p>
+      <p *ngIf="isUsingRealTwitch" class="small-note">
+        Tip: Los streamers normales (como les, luxuryusgamer, etc.) aparecen en <strong>Streamers / SoloQ</strong>.
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearch()"
+          placeholder="Buscar stream o canal...">
+      </div>
+
+      <div class="league-filters">
+        <button 
+          class="filter-btn"
+          [class.active]="activeFilter === 'all'"
+          (click)="filterStreams('all')">
+          Todos
+        </button>
+        <button 
+          class="filter-btn lck"
+          [class.active]="activeFilter === 'LCK'"
+          (click)="filterStreams('LCK')">
+          LCK
+        </button>
+        <button 
+          class="filter-btn lec"
+          [class.active]="activeFilter === 'LEC'"
+          (click)="filterStreams('LEC')">
+          LEC
+        </button>
+        <button 
+          class="filter-btn lcs"
+          [class.active]="activeFilter === 'LCS'"
+          (click)="filterStreams('LCS')">
+          LCS
+        </button>
+        <button 
+          class="filter-btn lpl"
+          [class.active]="activeFilter === 'LPL'"
+          (click)="filterStreams('LPL')">
+          LPL
+        </button>
+        <button 
+          class="filter-btn other"
+          [class.active]="activeFilter === 'Streamers'"
+          (click)="filterStreams('Streamers')">
+          Streamers / SoloQ
+        </button>
+      </div>
+    </div>
+
+    <!-- Streams Grid -->
+    <div class="streams-grid" *ngIf="filteredStreams.length > 0; else noStreams">
+      <div 
+        class="stream-card" 
+        *ngFor="let stream of filteredStreams"
+        (click)="openStream(stream)">
+
+        <div class="stream-thumbnail">
+          <img [src]="stream.thumbnail" [alt]="stream.title">
+          <div class="live-badge">LIVE</div>
+          <div class="viewer-count">
+            👁 {{ (stream.viewers / 1000).toFixed(0) }}K
+          </div>
+        </div>
+
+        <div class="stream-info">
+          <div class="stream-league" [style.color]="getLeagueColor(stream.league)">
+            {{ stream.league }}
+          </div>
+          <div class="stream-title">{{ stream.title }}</div>
+          <div class="stream-channel">{{ stream.channel }}</div>
+        </div>
+
+        <div class="stream-action">
+          <button class="watch-btn">Ver Stream</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noStreams>
+      <div class="no-results">
+        <p>No se encontraron streams con esos filtros.</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- Upcoming Events Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2>📅 Próximos Eventos</h2>
+      <p>Torneos y partidos importantes de League of Legends</p>
+    </div>
+
+    <div class="events-grid">
+      <div class="event-card" *ngFor="let event of upcomingEvents">
+        <div class="event-league">{{ event.league }}</div>
+        
+        <div class="event-match">
+          <span class="tournament">{{ event.tournament }}</span>
+          <span class="match-name">{{ event.match }}</span>
+        </div>
+
+        <div class="event-teams">
+          <span *ngFor="let team of event.teams; let last = last">
+            {{ team }} <span *ngIf="!last">vs</span>
+          </span>
+        </div>
+
+        <div class="event-datetime">
+          <span class="date">{{ event.date }}</span>
+          <span class="time">{{ event.time }}</span>
+        </div>
+
+        <button class="remind-btn">Recordarme</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Twitch Stream Modal -->
+  <div class="modal-backdrop" *ngIf="showStreamModal && selectedStream" (click)="closeStreamModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div>
+          <span class="modal-league" [style.color]="getLeagueColor(selectedStream.league)">
+            {{ selectedStream.league }}
+          </span>
+          <h3>{{ selectedStream.title }}</h3>
+          <p class="modal-channel">{{ selectedStream.channel }} • {{ (selectedStream.viewers / 1000).toFixed(0) }}K viewers</p>
+        </div>
+        <button class="close-modal" (click)="closeStreamModal()">✕</button>
+      </div>
+
+      <div class="stream-embed">
+        <!-- Twitch Embed (loaded only when modal opens) -->
+        <iframe
+          [src]="getSafeTwitchUrl(selectedStream.channel)"
+          height="480"
+          width="100%"
+          allowfullscreen
+          frameborder="0">
+        </iframe>
+        
+        <div class="embed-note">
+          <small>
+            Stream embebido desde Twitch. Si no carga, visita directamente 
+            <a [href]="'https://twitch.tv/' + selectedStream.channel" target="_blank">twitch.tv/{{ selectedStream.channel }}</a>
+          </small>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

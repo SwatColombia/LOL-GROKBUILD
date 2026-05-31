@@ -1,0 +1,196 @@
+<div class="regions-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>REGIONES Y SERVIDORES</h1>
+    <p>Explora todos los servidores de League of Legends alrededor del mundo</p>
+  </div>
+
+  <!-- ==================== VERIFICACIÓN DEL CLIENTE DE LEAGUE OF LEGENDS ==================== -->
+  <div class="game-check-section" *ngIf="showGameCheck">
+    <div class="game-check-card">
+
+      <!-- Imagen / Visual del juego -->
+      <div class="game-visual">
+        <div class="lol-client-preview">
+          <div class="client-header">
+            <div class="client-logo">LEAGUE OF LEGENDS</div>
+            <div class="client-version">CLIENT v16.11</div>
+          </div>
+          <div class="client-body">
+            <div class="play-button">
+              <span class="play-icon">▶</span>
+              <span>JUGAR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-check-content">
+        <h3>Verificación de Cliente</h3>
+        <p class="question">¿Tienes League of Legends instalado en tu computadora?</p>
+
+        <div class="game-check-actions">
+          <button class="btn-yes" (click)="setGameInstalled(true)">
+            ✅ Sí, lo tengo instalado
+          </button>
+          <button class="btn-no" (click)="setGameInstalled(false)">
+            ❌ No, no lo tengo instalado
+          </button>
+        </div>
+
+        <small class="note">Esta información se guarda solo en tu navegador (simulación)</small>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mensaje según respuesta (si ya respondió) -->
+  <div class="game-status-banner" *ngIf="!showGameCheck && gameInstalled !== null">
+    <div class="status-content" [class.installed]="gameInstalled" [class.not-installed]="!gameInstalled">
+      <span class="status-icon">{{ gameInstalled ? '🎮' : '👀' }}</span>
+      <span class="status-text">{{ getGameStatusMessage() }}</span>
+      <button class="change-answer-btn" (click)="resetGameCheck()">Cambiar respuesta</button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="search-wrapper">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearch()"
+        placeholder="Buscar región o servidor (NA, EUW, KR...)"
+        class="search-input">
+    </div>
+
+    <div class="status-filters">
+      <button 
+        class="filter-btn"
+        [class.active]="statusFilter === 'all'"
+        (click)="onStatusFilter('all')">
+        Todas
+      </button>
+      <button 
+        class="filter-btn online"
+        [class.active]="statusFilter === 'online'"
+        (click)="onStatusFilter('online')">
+        🟢 Operativas
+      </button>
+      <button 
+        class="filter-btn maintenance"
+        [class.active]="statusFilter === 'maintenance'"
+        (click)="onStatusFilter('maintenance')">
+        🟡 Mantenimiento
+      </button>
+      <button 
+        class="filter-btn unstable"
+        [class.active]="statusFilter === 'unstable'"
+        (click)="onStatusFilter('unstable')">
+        🔴 Inestables
+      </button>
+    </div>
+  </div>
+
+  <!-- Regions Grid -->
+  <div class="regions-grid">
+    <div 
+      *ngFor="let region of filteredRegions" 
+      class="region-card"
+      [class.recommended]="region.recommended"
+      (click)="selectRegion(region)">
+
+      <div class="card-header">
+        <div class="region-flag">{{ region.flag }}</div>
+        <div class="region-info">
+          <h3>{{ region.name }}</h3>
+          <span class="abbreviation">{{ region.abbreviation }}</span>
+        </div>
+        <div class="status-badge" [style.color]="getStatusColor(region.status)">
+          {{ getStatusIcon(region.status) }}
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-label">Ping promedio</span>
+            <span class="stat-value">{{ region.ping }}ms</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Población</span>
+            <span class="stat-value">{{ region.population }}</span>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <span class="status-text" [style.color]="getStatusColor(region.status)">
+            {{ getStatusText(region.status) }}
+          </span>
+        </div>
+
+        <div class="recommended-badge" *ngIf="region.recommended">
+          Recomendado para LATAM
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredRegions.length === 0" class="empty-state">
+    <p>No se encontraron regiones con esos filtros.</p>
+    <button (click)="searchTerm = ''; statusFilter = 'all'; applyFilters()">Limpiar filtros</button>
+  </div>
+
+  <!-- Region Detail Modal -->
+  <div *ngIf="selectedRegion" class="modal-backdrop" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="modal-flag">{{ selectedRegion.flag }}</span>
+          <div>
+            <h2>{{ selectedRegion.name }}</h2>
+            <span class="modal-abbr">{{ selectedRegion.abbreviation }}</span>
+          </div>
+        </div>
+        <button class="close-btn" (click)="closeDetail()">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="status-large" [style.color]="getStatusColor(selectedRegion.status)">
+          {{ getStatusIcon(selectedRegion.status) }} {{ getStatusText(selectedRegion.status) }}
+        </div>
+
+        <div class="detail-stats">
+          <div class="detail-stat">
+            <span class="label">Ping promedio</span>
+            <span class="value">{{ selectedRegion.ping }} ms</span>
+          </div>
+          <div class="detail-stat">
+            <span class="label">Población</span>
+            <span class="value">{{ selectedRegion.population }}</span>
+          </div>
+        </div>
+
+        <div class="description">
+          <h4>Descripción</h4>
+          <p>{{ selectedRegion.description }}</p>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" (click)="selectRegion(selectedRegion); closeDetail()">
+            Seleccionar esta región
+          </button>
+          <button class="btn-secondary" (click)="closeDetail()">
+            Cerrar
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

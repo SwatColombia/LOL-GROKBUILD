@@ -1,0 +1,113 @@
+<div class="profile-container" *ngIf="user">
+
+  <div class="profile-header">
+    <h1>MI PERFIL</h1>
+    <p>Información de tu cuenta de League Explorer</p>
+  </div>
+
+  <div class="profile-grid">
+
+    <!-- Información de la cuenta -->
+    <div class="profile-card">
+      <div class="card-header">
+        <h2>Información de la Cuenta</h2>
+      </div>
+
+      <div class="card-body">
+
+        <!-- Username -->
+        <div class="info-row">
+          <div class="info-label">Nombre de Invocador</div>
+          <div class="info-value" *ngIf="!editingUsername">
+            {{ user.username }}
+            <button class="edit-btn" (click)="startEditingUsername()">Editar</button>
+          </div>
+          <div class="edit-username" *ngIf="editingUsername">
+            <input type="text" [(ngModel)]="newUsername" (keyup.enter)="saveUsername()">
+            <button class="save-btn" (click)="saveUsername()">Guardar</button>
+            <button class="cancel-btn" (click)="cancelEditingUsername()">Cancelar</button>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Correo Electrónico</div>
+          <div class="info-value">{{ user.email }}</div>
+        </div>
+
+        <div class="info-row" *ngIf="user.phone">
+          <div class="info-label">WhatsApp</div>
+          <div class="info-value">{{ user.phone }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Fecha de Registro</div>
+          <div class="info-value">{{ formatDate(user.createdAt) }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Estado de la Cuenta</div>
+          <div class="info-value">
+            <span class="status-badge" [class.verified]="user.verified">
+              {{ user.verified ? '✓ Verificada' : 'Pendiente de verificación' }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Región seleccionada -->
+    <div class="profile-card">
+      <div class="card-header">
+        <h2>Región Principal</h2>
+      </div>
+
+      <div class="card-body">
+
+        <div *ngIf="selectedRegion; else noRegion">
+          <div class="region-display">
+            <div class="region-flag">{{ selectedRegion.flag }}</div>
+            <div class="region-details">
+              <div class="region-name">{{ selectedRegion.name }}</div>
+              <div class="region-abbr">{{ selectedRegion.abbreviation }}</div>
+            </div>
+          </div>
+
+          <div class="region-stats">
+            <div class="stat-item">
+              <span>Ping promedio</span>
+              <strong>{{ selectedRegion.ping }}ms</strong>
+            </div>
+            <div class="stat-item">
+              <span>Población</span>
+              <strong>{{ selectedRegion.population }}</strong>
+            </div>
+          </div>
+
+          <button class="btn-secondary" (click)="changeRegion()">
+            Cambiar de región
+          </button>
+        </div>
+
+        <ng-template #noRegion>
+          <div class="no-region">
+            <p>Aún no has seleccionado una región principal.</p>
+            <button class="btn-primary" (click)="goToRegions()">
+              Elegir región
+            </button>
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Acciones -->
+  <div class="profile-actions">
+    <button class="btn-logout" (click)="logout()">
+      Cerrar Sesión
+    </button>
+  </div>
+
+</div>

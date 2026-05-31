@@ -1,0 +1,520 @@
+.regions-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+
+  h1 {
+    color: #C8AA6E;
+    font-size: 36px;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #A09B8C;
+    font-size: 16px;
+  }
+}
+
+.filters-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  align-items: center;
+}
+
+.search-wrapper {
+  flex: 1;
+  min-width: 260px;
+}
+
+.search-input {
+  width: 100%;
+  background: #111C2E;
+  border: 1px solid #1E2A3E;
+  color: #F0E6D2;
+  padding: 12px 18px;
+  border-radius: 4px;
+  font-size: 15px;
+
+  &:focus {
+    outline: none;
+    border-color: #C8AA6E;
+  }
+}
+
+.status-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: #111C2E;
+  border: 1px solid #1E2A3E;
+  color: #A09B8C;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.active {
+    background: #C8AA6E;
+    color: #0A1428;
+    border-color: #C8AA6E;
+  }
+
+  &:hover:not(.active) {
+    border-color: #C8AA6E;
+  }
+}
+
+.regions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.region-card {
+  background: #111C2E;
+  border: 1px solid #1E2A3E;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &:hover {
+    border-color: #C8AA6E;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  &.recommended {
+    border-color: #C8AA6E;
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.region-flag {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.region-info {
+  flex: 1;
+
+  h3 {
+    color: #F0E6D2;
+    font-size: 18px;
+    margin: 0 0 2px;
+  }
+
+  .abbreviation {
+    color: #C8AA6E;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+}
+
+.status-badge {
+  font-size: 18px;
+}
+
+.card-body {
+  .stats-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 12px;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: #A09B8C;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    color: #F0E6D2;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.status-row {
+  margin-bottom: 12px;
+}
+
+.status-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.recommended-badge {
+  display: inline-block;
+  background: rgba(200, 170, 110, 0.15);
+  color: #C8AA6E;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid #785A28;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #A09B8C;
+
+  button {
+    margin-top: 16px;
+    background: transparent;
+    border: 1px solid #C8AA6E;
+    color: #C8AA6E;
+    padding: 10px 24px;
+    cursor: pointer;
+  }
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #111C2E;
+  border: 1px solid #C8AA6E;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: #0A1428;
+  border-bottom: 1px solid #1E2A3E;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .modal-flag {
+    font-size: 36px;
+  }
+
+  h2 {
+    color: #F0E6D2;
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .modal-abbr {
+    color: #C8AA6E;
+    font-size: 14px;
+  }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #C8AA6E;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.status-large {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.detail-stat {
+  background: #0A1428;
+  padding: 14px 18px;
+  border-radius: 6px;
+
+  .label {
+    display: block;
+    font-size: 12px;
+    color: #A09B8C;
+  }
+
+  .value {
+    font-size: 22px;
+    color: #F0E6D2;
+    font-weight: 700;
+  }
+}
+
+.description {
+  margin-bottom: 28px;
+
+  h4 {
+    color: #C8AA6E;
+    margin-bottom: 8px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  p {
+    color: #C8C3B0;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+
+  .btn-primary {
+    flex: 1;
+    background: #C8AA6E;
+    color: #0A1428;
+    border: none;
+    padding: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid #1E2A3E;
+    color: #A09B8C;
+    padding: 14px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+/* ==================== VERIFICACIÓN DEL CLIENTE ==================== */
+.game-check-section {
+  margin-bottom: 40px;
+}
+
+.game-check-card {
+  background: #111C2E;
+  border: 1px solid #1E2A3E;
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.game-visual {
+  flex-shrink: 0;
+}
+
+.lol-client-preview {
+  width: 260px;
+  height: 145px;
+  background: linear-gradient(135deg, #0A1428 0%, #1a2538 100%);
+  border: 2px solid #C8AA6E;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.client-header {
+  background: #0A1428;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #C8AA6E;
+}
+
+.client-logo {
+  color: #C8AA6E;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.client-version {
+  color: #A09B8C;
+  font-size: 10px;
+}
+
+.client-body {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-button {
+  background: #C8AA6E;
+  color: #0A1428;
+  padding: 10px 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(200, 170, 110, 0.4);
+}
+
+.play-icon {
+  font-size: 16px;
+}
+
+.game-check-content {
+  flex: 1;
+  min-width: 260px;
+
+  h3 {
+    color: #C8AA6E;
+    margin: 0 0 8px;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .question {
+    color: #F0E6D2;
+    font-size: 15px;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+}
+
+.game-check-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-yes, .btn-no {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.btn-yes {
+  background: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.btn-yes:hover {
+  background: #45a049;
+}
+
+.btn-no {
+  background: transparent;
+  color: #E84C3D;
+  border: 1px solid #E84C3D;
+}
+
+.btn-no:hover {
+  background: rgba(232, 76, 61, 0.1);
+}
+
+.note {
+  display: block;
+  margin-top: 12px;
+  color: #5A6A7A;
+  font-size: 11px;
+}
+
+/* Banner de estado después de responder */
+.game-status-banner {
+  margin-bottom: 32px;
+}
+
+.status-content {
+  background: #111C2E;
+  border: 1px solid #1E2A3E;
+  border-radius: 8px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.status-content.installed {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.08);
+}
+
+.status-content.not-installed {
+  border-color: #E84C3D;
+  background: rgba(232, 76, 61, 0.08);
+}
+
+.status-icon {
+  font-size: 20px;
+}
+
+.status-text {
+  color: #F0E6D2;
+  flex: 1;
+  font-size: 14px;
+}
+
+.change-answer-btn {
+  background: transparent;
+  border: 1px solid #C8AA6E;
+  color: #C8AA6E;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(200, 170, 110, 0.1);
+  }
+}

@@ -1,0 +1,264 @@
+<div class="home-container">
+
+  <!-- Hero Section with 3D -->
+  <section class="hero">
+    <div class="hero-grid">
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="hero-badge">DATA DRAGON API • PATCH 16.11</div>
+        
+        <h1 class="hero-title">EXPLORA EL<br>UNIVERSO</h1>
+        <h2 class="hero-subtitle">LEAGUE OF LEGENDS</h2>
+        
+        <p class="hero-description">
+          Descubre todos los campeones, sus habilidades y estadísticas usando la API oficial de Riot Games.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary" (click)="scrollToChampions()">EXPLORAR CAMPEONES</button>
+          <button class="btn-secondary" routerLink="/comparator">COMPARADOR 3D</button>
+        </div>
+      </div>
+
+      <!-- Right: 3D Hextech Crystal -->
+      <div class="hero-3d">
+        <div class="crystal-wrapper">
+          <app-hextech-crystal></app-hextech-crystal>
+        </div>
+        <div class="crystal-label">HEXTECH CRYSTAL</div>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">{{ champions.length }}</span>
+        <span class="stat-label">CAMPEONES</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-number">{{ filteredChampions.length }}</span>
+        <span class="stat-label">EN PANTALLA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters Section -->
+  <section class="filters-section">
+    <div class="filters-container">
+
+      <!-- Search -->
+      <div class="search-wrapper">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          placeholder="Buscar campeón por nombre o título..."
+          class="search-input"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- Role Filters -->
+      <div class="roles-filter">
+        <span class="filter-label">FILTRAR POR ROL:</span>
+        <div class="role-chips">
+          <button
+            *ngFor="let role of availableRoles"
+            class="role-chip"
+            [class.active]="selectedRoles.includes(role)"
+            (click)="toggleRole(role)">
+            <span class="role-icon">{{ getRoleIcon(role) }}</span>
+            {{ role }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Clear Filters -->
+      <button
+        *ngIf="searchTerm || selectedRoles.length"
+        class="clear-filters-btn"
+        (click)="clearFilters()">
+        LIMPIAR FILTROS
+      </button>
+
+    </div>
+  </section>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando campeones desde Data Dragon...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="loadChampions()">REINTENTAR</button>
+  </div>
+
+  <!-- Champions Grid -->
+  <section *ngIf="!loading && !error" class="champions-grid">
+    <div
+      *ngFor="let champion of filteredChampions"
+      class="champion-card"
+      appMouseTilt
+      [tiltMax]="10"
+      [scale]="1.04"
+      (click)="openChampionDetail(champion)">
+
+      <div class="card-image-wrapper">
+        <img
+          [src]="getChampionIcon(champion)"
+          [alt]="champion.name"
+          class="champion-icon"
+          loading="lazy">
+        <div class="card-overlay">
+          <span class="view-more">VER DETALLE →</span>
+        </div>
+      </div>
+
+      <div class="card-info">
+        <h3 class="champion-name">{{ champion.name }}</h3>
+        <p class="champion-title">{{ champion.title }}</p>
+
+        <div class="champion-roles">
+          <span *ngFor="let tag of champion.tags" class="role-tag">
+            {{ tag }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredChampions.length === 0" class="empty-state">
+      <p>No se encontraron campeones con esos filtros.</p>
+      <button class="clear-filters-btn" (click)="clearFilters()">LIMPIAR FILTROS</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- Champion Detail Modal -->
+<div *ngIf="selectedChampion" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="modal-title">
+        <img [src]="getChampionIcon(selectedChampion)" [alt]="selectedChampion.name" class="modal-icon">
+        <div>
+          <h2>{{ selectedChampion.name }}</h2>
+          <p class="modal-subtitle">{{ selectedChampion.title }}</p>
+        </div>
+      </div>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <!-- Loading Detail -->
+    <div *ngIf="loadingDetail" class="modal-loading">
+      <div class="spinner"></div>
+      <p>Cargando información del campeón...</p>
+    </div>
+
+    <!-- Champion Detail Content -->
+    <div *ngIf="selectedChampion && !loadingDetail" class="modal-body">
+
+      <!-- Splash + Lore -->
+      <div class="detail-hero">
+        <img
+          [src]="legendsService.getChampionSplashUrl(selectedChampion.id)"
+          [alt]="selectedChampion.name"
+          class="splash-art">
+
+        <div class="lore-box">
+          <h4>LORE</h4>
+          <p>{{ selectedChampion.lore }}</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-section">
+        <h4>ESTADÍSTICAS</h4>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">ATAQUE</span>
+            <div class="stat-bar"><div class="bar-fill" [style.width.%]="selectedChampion.info.attack * 10"></div></div>
+            <span class="stat-value">{{ selectedChampion.info.attack }}/10</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">DEFENSA</span>
+            <div class="stat-bar"><div class="bar-fill" [style.width.%]="selectedChampion.info.defense * 10"></div></div>
+            <span class="stat-value">{{ selectedChampion.info.defense }}/10</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">MAGIA</span>
+            <div class="stat-bar"><div class="bar-fill" [style.width.%]="selectedChampion.info.magic * 10"></div></div>
+            <span class="stat-value">{{ selectedChampion.info.magic }}/10</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">DIFICULTAD</span>
+            <div class="stat-bar"><div class="bar-fill difficulty" [style.width.%]="selectedChampion.info.difficulty * 10"></div></div>
+            <span class="stat-value">{{ selectedChampion.info.difficulty }}/10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passive + Spells -->
+      <div class="abilities-section">
+        <h4>HABILIDADES</h4>
+
+        <!-- Passive -->
+        <div class="ability">
+          <div class="ability-header">
+            <img [src]="legendsService.getPassiveIconUrl(selectedChampion.passive.image.full)" class="ability-icon" alt="Passive">
+            <div>
+              <span class="ability-key">PASIVA</span>
+              <span class="ability-name">{{ selectedChampion.passive.name }}</span>
+            </div>
+          </div>
+          <p class="ability-desc" [innerHTML]="selectedChampion.passive.description"></p>
+        </div>
+
+        <!-- Spells QWER -->
+        <div class="ability" *ngFor="let spell of selectedChampion.spells; let i = index">
+          <div class="ability-header">
+            <img [src]="legendsService.getSpellIconUrl(spell.image.full)" class="ability-icon" alt="Spell">
+            <div>
+              <span class="ability-key">{{ ['Q','W','E','R'][i] }}</span>
+              <span class="ability-name">{{ spell.name }}</span>
+            </div>
+          </div>
+          <p class="ability-desc" [innerHTML]="spell.description"></p>
+          <div class="spell-meta" *ngIf="spell.cooldown?.length">
+            <span>Cooldown: {{ spell.cooldown[0] }}s</span>
+            <span *ngIf="spell.cost?.length"> • Costo: {{ spell.cost[0] }} {{ spell.costType }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="tips-section" *ngIf="selectedChampion.allytips?.length || selectedChampion.enemytips?.length">
+        <div class="tips-column" *ngIf="selectedChampion.allytips?.length">
+          <h5>💡 Consejos para aliados</h5>
+          <ul>
+            <li *ngFor="let tip of selectedChampion.allytips">{{ tip }}</li>
+          </ul>
+        </div>
+        <div class="tips-column" *ngIf="selectedChampion.enemytips?.length">
+          <h5>⚠️ Consejos contra este campeón</h5>
+          <ul>
+            <li *ngFor="let tip of selectedChampion.enemytips">{{ tip }}</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="close-modal-btn" (click)="closeModal()">CERRAR</button>
+    </div>
+
+  </div>
+</div>

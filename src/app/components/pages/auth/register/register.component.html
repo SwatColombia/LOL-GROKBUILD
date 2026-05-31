@@ -1,0 +1,95 @@
+<div class="auth-container">
+  <div class="auth-card register-card">
+
+    <div class="auth-header">
+      <h1>CREAR CUENTA</h1>
+      <p>Únete a League Explorer</p>
+    </div>
+
+    <form (ngSubmit)="onRegister()" class="auth-form">
+
+      <div class="form-group">
+        <label>Nombre de Invocador <span class="required">*</span></label>
+        <input 
+          type="text" 
+          [(ngModel)]="username" 
+          name="username"
+          placeholder="TuNombreDeInvocador" 
+          required>
+      </div>
+
+      <div class="form-group">
+        <label>Correo Electrónico <span class="required">*</span></label>
+        <input 
+          type="email" 
+          [(ngModel)]="email" 
+          name="email"
+          placeholder="tu@email.com" 
+          required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Contraseña <span class="required">*</span></label>
+          <input 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password"
+            placeholder="Mínimo 6 caracteres" 
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Confirmar Contraseña <span class="required">*</span></label>
+          <input 
+            type="password" 
+            [(ngModel)]="confirmPassword" 
+            name="confirmPassword"
+            placeholder="Repite la contraseña" 
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Número de WhatsApp (Opcional)</label>
+        <input 
+          type="tel" 
+          [(ngModel)]="phone" 
+          name="phone"
+          placeholder="+52 123 456 7890">
+        <small class="hint">Usado para verificación de cuenta</small>
+      </div>
+
+      <!-- Método de verificación -->
+      <div class="form-group verification-method">
+        <label>Método de verificación preferido</label>
+        <div class="method-options">
+          <label class="method-option" [class.active]="verificationMethod === 'email'">
+            <input type="radio" [(ngModel)]="verificationMethod" name="method" value="email">
+            <span>Email</span>
+          </label>
+          <label class="method-option" [class.active]="verificationMethod === 'whatsapp'" [class.disabled]="!phone">
+            <input type="radio" [(ngModel)]="verificationMethod" name="method" value="whatsapp" [disabled]="!phone">
+            <span>WhatsApp</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        <span *ngIf="!loading">CREAR CUENTA</span>
+        <span *ngIf="loading">CREANDO CUENTA...</span>
+      </button>
+
+    </form>
+
+    <div class="auth-footer">
+      <p>¿Ya tienes cuenta?</p>
+      <button class="btn-link" (click)="goToLogin()">Iniciar sesión</button>
+    </div>
+
+  </div>
+</div>

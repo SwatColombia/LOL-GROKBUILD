@@ -1,0 +1,68 @@
+<div class="auth-container">
+  <div class="auth-card verify-card">
+
+    <div class="auth-header">
+      <h1>VERIFICA TU CUENTA</h1>
+      <p>Hemos enviado un código de verificación</p>
+    </div>
+
+    <div class="verify-info" *ngIf="user">
+      <p>
+        Enviamos un código a tu 
+        <strong>{{ verificationMethod === 'email' ? 'correo' : 'WhatsApp' }}</strong>:
+      </p>
+      <div class="contact">
+        {{ contactInfo }}
+      </div>
+    </div>
+
+    <div class="demo-note">
+      <strong>DEMO:</strong> El código de verificación es <span class="code-hint">123456</span>
+    </div>
+
+    <form (ngSubmit)="onVerify()" class="auth-form">
+
+      <div class="form-group code-group">
+        <label>Código de Verificación</label>
+        <input 
+          type="text" 
+          [(ngModel)]="code" 
+          name="code"
+          (input)="onCodeInput($event)"
+          maxlength="6"
+          placeholder="000000"
+          class="code-input"
+          required>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading || !code">
+        <span *ngIf="!loading">VERIFICAR CUENTA</span>
+        <span *ngIf="loading">VERIFICANDO...</span>
+      </button>
+
+    </form>
+
+    <div class="resend-section">
+      <p>¿No recibiste el código?</p>
+      <button 
+        class="btn-link" 
+        (click)="resendCode()" 
+        [disabled]="resending">
+        Reenviar código por {{ verificationMethod === 'email' ? 'Email' : 'WhatsApp' }}
+      </button>
+    </div>
+
+    <div class="auth-footer">
+      <button class="btn-link" (click)="goBack()">Volver al registro</button>
+    </div>
+
+  </div>
+</div>

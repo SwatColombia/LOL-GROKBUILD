@@ -1,0 +1,188 @@
+/* League of Legends Dark Theme */
+:root {
+  --lol-bg: #0A1428;
+  --lol-bg-secondary: #111C2E;
+  --lol-gold: #C8AA6E;
+  --lol-gold-dark: #785A28;
+  --lol-text: #A09B8C;
+  --lol-white: #F0E6D2;
+}
+
+.lol-navbar {
+  background: linear-gradient(180deg, #0A1428 0%, #111C2E 100%);
+  border-bottom: 2px solid var(--lol-gold);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 24px;
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  /* Ensure text is always visible regardless of page background */
+  color: #F5E8C7;
+}
+
+.lol-text {
+  font-family: 'Beaufort for LOL', 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4.5px;
+  color: #E8C872;           /* Brighter, warmer gold for excellent visibility */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+}
+
+.explorer-text {
+  font-family: 'Beaufort for LOL', 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  color: #F8F0D8;           /* Very light warm tone for maximum contrast */
+  letter-spacing: 3px;
+  opacity: 0.92;
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  text-transform: uppercase;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-link {
+  color: #E8DFC9;           /* Mucho más claro para mejor visibilidad */
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.2s ease;
+  opacity: 0.95;
+}
+
+.nav-link:hover {
+  color: #F0E6D2;           /* Casi blanco al pasar el mouse */
+  opacity: 1;
+}
+
+.nav-link.active {
+  color: #C8AA6E;           /* Dorado cuando está activa */
+  opacity: 1;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lol-gold);
+}
+
+.navbar-version {
+  font-size: 12px;
+  color: var(--lol-gold);
+  background: rgba(200, 170, 110, 0.1);
+  padding: 4px 12px;
+  border: 1px solid var(--lol-gold-dark);
+  border-radius: 2px;
+}
+
+/* Auth Section in Navbar */
+.navbar-auth {
+  display: flex;
+  align-items: center;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-register {
+  background: #C8AA6E;
+  color: #0A1428;
+  padding: 8px 18px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #F0E6D2;
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .username {
+    color: #F0E6D2;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      color: #C8AA6E;
+      text-decoration: underline;
+    }
+  }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid #C8AA6E;
+    color: #F0E6D2;
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+
+    &:hover {
+      background: rgba(200, 170, 110, 0.15);
+      color: #C8AA6E;
+    }
+  }
+}
+
+.main-content {
+  min-height: calc(100vh - 140px);
+  background-color: var(--lol-bg);
+}
+
+.lol-footer {
+  background: #0A1428;
+  border-top: 1px solid #1E2A3E;
+  padding: 20px;
+  text-align: center;
+  color: var(--lol-text);
+  font-size: 12px;
+}
+
+.lol-footer a {
+  color: var(--lol-gold);
+  text-decoration: none;
+}
+
+.lol-footer a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,170 @@
+<div class="comparator-page">
+
+  <div class="page-header">
+    <h1>COMPARADOR DE CAMPEONES</h1>
+    <p>Elige dos campeones y compara sus estadísticas, habilidades y fortalezas.</p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando campeones...</p>
+  </div>
+
+  <div *ngIf="!loading" class="comparator-container">
+
+    <!-- Two Selection Panels -->
+    <div class="selection-grid">
+
+      <!-- Champion 1 -->
+      <div class="champion-panel" [class.has-champion]="selectedChampion1">
+        <div class="panel-header">
+          <span class="panel-label">CAMPEÓN 1</span>
+          <button *ngIf="selectedChampion1" class="clear-btn" (click)="clearSelection(1)">Cambiar</button>
+        </div>
+
+        <!-- Selection Mode -->
+        <div *ngIf="!selectedChampion1" class="selector">
+          <input 
+            type="text" 
+            [(ngModel)]="search1" 
+            (input)="filterChampions(1)"
+            placeholder="Buscar campeón..."
+            class="search-input">
+
+          <div class="champion-list">
+            <div 
+              *ngFor="let champ of filtered1 | slice:0:8" 
+              class="champion-option"
+              (click)="selectChampion(1, champ)">
+              <img [src]="getIconUrl(champ.id)" [alt]="champ.name">
+              <span>{{ champ.name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Champion -->
+        <div *ngIf="selectedChampion1" class="selected-champion">
+          <div class="selected-header">
+            <img [src]="getIconUrl(selectedChampion1.id)" class="selected-icon">
+            <div>
+              <h3>{{ selectedChampion1.name }}</h3>
+              <p>{{ selectedChampion1.title }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS -->
+      <div class="vs-container">
+        <div class="vs-circle">VS</div>
+      </div>
+
+      <!-- Champion 2 -->
+      <div class="champion-panel" [class.has-champion]="selectedChampion2">
+        <div class="panel-header">
+          <span class="panel-label">CAMPEÓN 2</span>
+          <button *ngIf="selectedChampion2" class="clear-btn" (click)="clearSelection(2)">Cambiar</button>
+        </div>
+
+        <div *ngIf="!selectedChampion2" class="selector">
+          <input 
+            type="text" 
+            [(ngModel)]="search2" 
+            (input)="filterChampions(2)"
+            placeholder="Buscar campeón..."
+            class="search-input">
+
+          <div class="champion-list">
+            <div 
+              *ngFor="let champ of filtered2 | slice:0:8" 
+              class="champion-option"
+              (click)="selectChampion(2, champ)">
+              <img [src]="getIconUrl(champ.id)" [alt]="champ.name">
+              <span>{{ champ.name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="selectedChampion2" class="selected-champion">
+          <div class="selected-header">
+            <img [src]="getIconUrl(selectedChampion2.id)" class="selected-icon">
+            <div>
+              <h3>{{ selectedChampion2.name }}</h3>
+              <p>{{ selectedChampion2.title }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Results -->
+    <div *ngIf="selectedChampion1 && selectedChampion2" class="comparison-results">
+
+      <!-- Winner Banner -->
+      <div class="winner-banner">
+        <span class="winner-label">GANADOR SEGÚN STATS</span>
+        <span class="winner-name">{{ getWinner() }}</span>
+      </div>
+
+      <!-- Stats Comparison -->
+      <div class="stats-comparison">
+        <h3>ESTADÍSTICAS BASE</h3>
+
+        <div class="stat-row" *ngFor="let stat of ['attack', 'defense', 'magic', 'difficulty']">
+          <div class="stat-name">{{ stat.toUpperCase() }}</div>
+
+          <div class="stat-bars">
+            <!-- Champion 1 Bar -->
+            <div class="bar-container left">
+              <div class="bar" [class.winner]="getStatComparison(stat).winner === 1">
+                <div class="bar-fill" [style.width.%]="getStatComparison(stat).value1 * 10"></div>
+              </div>
+              <span class="bar-value">{{ getStatComparison(stat).value1 }}</span>
+            </div>
+
+            <div class="stat-center">{{ stat }}</div>
+
+            <!-- Champion 2 Bar -->
+            <div class="bar-container right">
+              <span class="bar-value">{{ getStatComparison(stat).value2 }}</span>
+              <div class="bar" [class.winner]="getStatComparison(stat).winner === 2">
+                <div class="bar-fill" [style.width.%]="getStatComparison(stat).value2 * 10"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Info -->
+      <div class="quick-info-grid">
+        <div class="info-card">
+          <span class="info-label">PODER GENERAL</span>
+          <span class="info-value">{{ getOverallScore(selectedChampion1) }} <small>/10</small></span>
+        </div>
+        <div class="info-card">
+          <span class="info-label">PODER GENERAL</span>
+          <span class="info-value">{{ getOverallScore(selectedChampion2) }} <small>/10</small></span>
+        </div>
+      </div>
+
+      <!-- Roles -->
+      <div class="roles-comparison">
+        <div class="role-box">
+          <span *ngFor="let role of selectedChampion1.tags" class="role-pill">{{ role }}</span>
+        </div>
+        <div class="vs-small">VS</div>
+        <div class="role-box">
+          <span *ngFor="let role of selectedChampion2.tags" class="role-pill">{{ role }}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="selectedChampion1 && selectedChampion2" class="note">
+      * La comparación se basa únicamente en las estadísticas base del juego. El resultado real depende del jugador, ítems y matchup.
+    </div>
+
+  </div>
+
+</div>

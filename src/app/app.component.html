@@ -1,0 +1,51 @@
+<!-- Navbar League of Legends Style -->
+<nav class="lol-navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <span class="lol-text">LEAGUE OF LEGENDS</span>
+      <span class="explorer-text">EXPLORER</span>
+    </div>
+
+    <div class="navbar-links">
+      <a routerLink="/home" routerLinkActive="active" class="nav-link">Campeones</a>
+      <a routerLink="/regions" routerLinkActive="active" class="nav-link">Regiones</a>
+      <a routerLink="/live" routerLinkActive="active" class="nav-link">En Vivo</a>
+      <a routerLink="/comparator" routerLinkActive="active" class="nav-link">Comparador</a>
+      <a routerLink="/persons" routerLinkActive="active" class="nav-link">Invocadores</a>
+    </div>
+
+    <!-- Auth Section -->
+    <div class="navbar-auth">
+      <ng-container *ngIf="currentUser; else loggedOut">
+        <div class="user-info">
+          <a routerLink="/profile" class="username">{{ currentUser.username }}</a>
+          <button class="logout-btn" (click)="logout()">Salir</button>
+        </div>
+      </ng-container>
+
+      <ng-template #loggedOut>
+        <div class="auth-buttons">
+          <a routerLink="/login" class="nav-link">Login</a>
+          <a routerLink="/register" class="btn-register">Registrarse</a>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="navbar-version">
+      Patch {{ currentPatch }}
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Footer -->
+<footer class="lol-footer">
+  <p>
+    Datos proporcionados por 
+    <a href="https://developer.riotgames.com/docs/lol" target="_blank" rel="noopener">Riot Games Data Dragon API</a>
+  </p>
+</footer>

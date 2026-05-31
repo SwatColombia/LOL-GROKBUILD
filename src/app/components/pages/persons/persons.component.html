@@ -1,0 +1,93 @@
+<div class="invocadores-container">
+
+  <!-- Hero / Header -->
+  <div class="page-header">
+    <h1>ESTADÍSTICAS GLOBALES</h1>
+    <p>Datos de la comunidad de League of Legends - Parche 16.11</p>
+  </div>
+
+  <!-- Big Stats -->
+  <section class="big-stats">
+    <div class="stat-card" *ngFor="let stat of bigStats">
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-label">{{ stat.label }}</div>
+      <div class="stat-change" [class.positive]="stat.positive" [class.negative]="!stat.positive">
+        {{ stat.change }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Estadísticas por Región -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Estadísticas por Región</h2>
+      <p>Jugadores activos por servidor</p>
+    </div>
+
+    <div class="region-stats-grid">
+      <div class="region-stat-card" *ngFor="let region of regionStats">
+        <div class="region-name">{{ region.name }}</div>
+        <div class="region-players">{{ region.players }} jugadores</div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="region.percentage"></div>
+        </div>
+        <div class="percentage">{{ region.percentage }}%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Campeones Más Jugados -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Campeones Más Jugados - Parche 16.11</h2>
+      <p>Top 8 campeones según tasa de selección</p>
+    </div>
+
+    <div class="champions-grid">
+      <div class="champion-stat-card" *ngFor="let champ of topChampions">
+        <div class="champ-info">
+          <div class="champ-name">{{ champ.name }}</div>
+          <div class="champ-role">{{ champ.role }}</div>
+        </div>
+        <div class="champ-stats">
+          <div class="stat-item">
+            <span class="stat-label">Pick Rate</span>
+            <span class="stat-value pick">{{ champ.pickRate }}%</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Win Rate</span>
+            <span class="stat-value win">{{ champ.winRate }}%</span>
+          </div>
+        </div>
+        <div class="pick-bar">
+          <div class="pick-fill" [style.width.%]="champ.pickRate"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Distribución de Roles -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Distribución de Roles</h2>
+      <p>Porcentaje de partidas por rol</p>
+    </div>
+
+    <div class="roles-distribution">
+      <div class="role-bar" *ngFor="let role of roleDistribution">
+        <div class="role-info">
+          <span class="role-name">{{ role.role }}</span>
+          <span class="role-percentage">{{ role.percentage }}%</span>
+        </div>
+        <div class="role-progress">
+          <div class="role-fill" [style.width.%]="role.percentage" [style.background]="role.color"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <p>* Datos simulados basados en estadísticas aproximadas de la comunidad. Actualizado para el parche 16.11</p>
+  </div>
+
+</div>
